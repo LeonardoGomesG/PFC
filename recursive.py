@@ -3,14 +3,14 @@ import re
 from bs4 import BeautifulSoup
 import requests
 
+# Apenas para controle de profundidade em testes
 depth = 0
 
 
 # função recursiva
 def scrape(ref, data=None, domain=None):
     global depth
-    print("d = ", depth)
-    # fazendo o request para a url
+    print("deph = ", depth)
     if data is None:
         data = []
 
@@ -36,12 +36,10 @@ def scrape(ref, data=None, domain=None):
             else:
                 site = href
 
-            # escopo da pesquisa limitado a base
+            # escopo da pesquisa limitado a base e profundidade
             if re.search(domain, site) and depth < 50:
                 if not href.endswith(".pdf") and not href.endswith(".jpg") and not href.endswith(".rar"):
-                    # urls.append(site)
                     print(site)
-                    # recursividade
                     depth += 1
                     if site not in data.keys():
                         data[site] = None
