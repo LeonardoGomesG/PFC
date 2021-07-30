@@ -1,5 +1,5 @@
 from hashing import compare_hashes
-from recursive import recursive_get_urls_in_domain
+from scraping import recursive_get_urls_in_domain
 from utils import load_data, write_data
 
 # Create a .config file
