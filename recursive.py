@@ -7,12 +7,17 @@ import requests
 depth = 0
 
 
+def recursive_get_urls_in_domain(base, domain=None):
+    print("Finding recursive urls")
+    return scrape(base, domain)
+
+
 # função recursiva
-def scrape(ref, data=None, domain=None):
+def scrape(ref, domain=None, data=None):
     global depth
-    print("deph = ", depth)
+    # print("deph = ", depth)
     if data is None:
-        data = []
+        data = {}
 
     r = requests.get(ref)
 
@@ -25,7 +30,7 @@ def scrape(ref, data=None, domain=None):
     except:
         print("Url out of the domain:", ref)
         return data
-
+    depth += 1
     for i in s.find_all("a"):
 
         href = i.get('href')
@@ -37,13 +42,11 @@ def scrape(ref, data=None, domain=None):
                 site = href
 
             # escopo da pesquisa limitado a base e profundidade
-            if re.search(domain, site) and depth < 50:
+            if site not in data.keys() and re.search(domain, site) and depth < 50:
                 if not href.endswith(".pdf") and not href.endswith(".jpg") and not href.endswith(".rar"):
                     print(site)
-                    depth += 1
-                    if site not in data.keys():
-                        data[site] = None
-
-                    scrape(site, data, domain)
+                    # recursividade
+                    data[site] = None
+                    scrape(site, domain, data)
 
     return data
