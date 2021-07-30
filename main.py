@@ -1,4 +1,4 @@
-from hashing import compare_hashes_path
+from hashing import compare_hashes
 from recursive import scrape
 from utils import load_data, write_data
 
