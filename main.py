@@ -1,10 +1,10 @@
+import config
 from hashing import compare_hashes
 from scraping import recursive_get_urls_in_domain
 from utils import load_data, write_data
 
-# Create a .config file
-base = "http://www.ime.eb.mil.br"
-domain = "ime.eb.mil.br"
+base = config.recursive["base"]
+domain = config.recursive["domain"]
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':

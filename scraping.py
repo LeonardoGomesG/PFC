@@ -4,15 +4,26 @@ from bs4 import BeautifulSoup
 import requests
 
 # Apenas para controle de profundidade em testes
+import config
+
+max_depth = config.recursive["max_depth"]
 depth = 0
 
 
 def recursive_get_urls_in_domain(base, domain=None):
     print("Finding recursive urls")
+    if max_depth:
+        print("Limiting max_depth:", max_depth)
     return scrape(base, domain)
 
 
-# função recursiva
+def reached_max_depth(current_depth):
+    if max_depth:
+        return current_depth > max_depth
+    else:
+        return False
+
+# recursive scraping
 def scrape(ref, domain=None, data=None):
     global depth
     # print("deph = ", depth)
@@ -21,19 +32,21 @@ def scrape(ref, domain=None, data=None):
 
     r = requests.get(ref)
 
-    # convertendo o texto, para um parser
+    # converting to a parser
     s = BeautifulSoup(r.text, "html.parser")
 
-    try:
-        base = re.findall("(^\S+)" + domain, ref)[0]
-        base = base + domain
-    except:
-        print("Url out of the domain:", ref)
-        return data
     depth += 1
     for i in s.find_all("a"):
 
         href = i.get('href')
+
+        try:
+            protocol = re.findall('(\w+)://', ref)[0]
+            hostname = re.findall('://([\w\-.]+)', ref)[0]
+            base = protocol + "://" + hostname
+        except:
+            print("Out of the domain")
+            continue
 
         if href:
             if href.startswith("/"):
@@ -41,12 +54,12 @@ def scrape(ref, domain=None, data=None):
             else:
                 site = href
 
-            # escopo da pesquisa limitado a base e profundidade
-            if site not in data.keys() and re.search(domain, site) and depth < 50:
-                if not href.endswith(".pdf") and not href.endswith(".jpg") and not href.endswith(".rar"):
+            # search limited by domain and depth
+            if site not in data.keys() and re.search(domain, site) and not reached_max_depth(depth):
+                if not site.endswith(".pdf") and not site.endswith(".jpg") and not site.endswith(".rar") and not re.search("@", site):
                     print(site)
-                    # recursividade
                     data[site] = None
+                    # print("\n", data.keys())
                     scrape(site, domain, data)
 
     return data

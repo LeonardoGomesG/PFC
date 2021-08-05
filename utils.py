@@ -1,11 +1,18 @@
 import json
 
+import config
+
 
 def load_data():
-    with open("data.json") as file:
-        data = json.load(file)
-    file.close()
-    return data
+    if config.data["load_previous_data"]:
+        with open("data.json") as file:
+            data = json.load(file)
+        file.close()
+        print("\nPrevious data loaded")
+        return data
+    else:
+        print("\nPrevious data not loaded")
+        return {}
 
 
 def write_data(data):
