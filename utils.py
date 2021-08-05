@@ -3,11 +3,12 @@ import json
 import config
 
 
-def load_data():
+def load_data(urls):
     if config.data["load_previous_data"]:
         with open("data.json") as file:
             data = json.load(file)
         file.close()
+        data = {**urls, **data}
         print("\nPrevious data loaded")
         return data
     else:
