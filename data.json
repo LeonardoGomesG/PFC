@@ -1,6 +1,6 @@
 {
-  "https://webscraper.io/test-sites/e-commerce/static": "aa1512ac3d9da414b12de59c4949fc7b",
-  "https://webscraper.io/test-sites/e-commerce/static/computers": "7ec0a8f336bd7c3a8b45980e8385d1e7",
+  "https://webscraper.io/test-sites/e-commerce/static": "253bd1575387f44f6dc870c1ef4fb948",
+  "https://webscraper.io/test-sites/e-commerce/static/computers": "c29e8c6321ed5fd1c11d2d92b296f10d",
   "https://webscraper.io/test-sites/e-commerce/static/computers/laptops": "527e814f5ce79f4978837c8505d7ea17",
   "https://webscraper.io/test-sites/e-commerce/static/computers/laptops?page=1": "a7e5b3f96494bbe541a7bbcf7434965e",
   "https://webscraper.io/test-sites/e-commerce/static/computers/laptops?page=10": "24fd91339150e171617c17637a2fa33d",
@@ -27,7 +27,7 @@
   "https://webscraper.io/test-sites/e-commerce/static/computers/tablets?page=2": "b33c08066e3590eeac2dbedc259e6d7a",
   "https://webscraper.io/test-sites/e-commerce/static/computers/tablets?page=3": "4a0516ea06bd8231b654a61e10a2a90d",
   "https://webscraper.io/test-sites/e-commerce/static/computers/tablets?page=4": "a861f4f23c3e61311210de1c742c36a2",
-  "https://webscraper.io/test-sites/e-commerce/static/phones": "b2e2f56cb9fc7b328b4a0665e59b138e",
+  "https://webscraper.io/test-sites/e-commerce/static/phones": "c015aa232bc302781fb4a030b3063153",
   "https://webscraper.io/test-sites/e-commerce/static/phones/touch": "fc4ddad4d57c899356ddd36f458e9998",
   "https://webscraper.io/test-sites/e-commerce/static/phones/touch?page=1": "87dc96e3a851d5b6d0505b7b497e8d4e",
   "https://webscraper.io/test-sites/e-commerce/static/phones/touch?page=2": "6b3c23a8b7d9f721323cdc0a2471a624",

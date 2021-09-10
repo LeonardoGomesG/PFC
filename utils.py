@@ -8,12 +8,13 @@ def load_data(urls):
         with open("data.json") as file:
             data = json.load(file)
         file.close()
+        # inner fazer um inner_join
         data = {**urls, **data}
         print("\nPrevious data loaded")
         return data
     else:
         print("\nPrevious data not loaded")
-        return {}
+        return urls
 
 
 def write_data(data):
