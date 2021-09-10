@@ -1,10 +1,11 @@
-from setup.config import recursive
-from hashing import compare_hashes
-from scraping import recursive_get_urls_in_domain
-from utils import load_data, write_data
+from domain.hashing import compare_hashes
+from domain.scraping import recursive_get_urls_in_domain
+from domain.utils import load_data, write_data
+from setup.config import recursive as config_recursive
 
-base = recursive["base"]
-domain = recursive["domain"]
+
+base = config_recursive["base"]
+domain = config_recursive["domain"]
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':

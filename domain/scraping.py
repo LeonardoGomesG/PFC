@@ -4,9 +4,9 @@ from bs4 import BeautifulSoup
 import requests
 
 # Apenas para controle de profundidade em testes
-import config
+from setup.config import recursive as config_recursive
 
-max_depth = config.recursive["max_depth"]
+max_depth = config_recursive["max_depth"]
 depth = 0
 
 

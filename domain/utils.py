@@ -1,10 +1,10 @@
 import json
 
-import config
+from setup.config import data as config_data
 
 
 def load_data(urls):
-    if config.data["load_previous_data"]:
+    if config_data["load_previous_data"]:
         with open("data.json") as file:
             data = json.load(file)
         file.close()
