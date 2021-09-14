@@ -1,8 +1,8 @@
-from domain.hashing import compare_hashes
-from domain.scraping import recursive_get_urls_in_domain
-from domain.utils import load_data, write_data
 from setup.config import recursive as config_recursive
 
+from domain.detection.hashing import compare_hashes
+from domain.recursive.scraping import recursive_get_urls_in_domain
+from domain.utils import load_data, write_data
 
 base = config_recursive["base"]
 domain = config_recursive["domain"]
