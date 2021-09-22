@@ -6,5 +6,10 @@ recursive = {
 }
 
 data = {
-    "load_previous_data": True
+    "load_previous_data": True,
+    'path': './domain/data.json'
+}
+
+signatures = {
+    'path': './domain/classification/signatures.txt'
 }

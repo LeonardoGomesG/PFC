@@ -1,11 +1,8 @@
 import json
 
-from setup.config import data as config_data
-
-
-def load_data(urls):
-    if config_data["load_previous_data"]:
-        with open("data.json") as file:
+def load_data(urls, load_previous_data, path):
+    if load_previous_data:
+        with open(path) as file:
             data = json.load(file)
         file.close()
         # inner fazer um inner_join
@@ -17,8 +14,8 @@ def load_data(urls):
         return urls
 
 
-def write_data(data):
-    with open("data.json", "w") as file:
+def write_data(data, path):
+    with open(path, "w") as file:
         json.dump(data, file, indent=2, sort_keys=True)
     file.close()
 
