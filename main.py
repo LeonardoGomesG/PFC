@@ -5,7 +5,7 @@ from setup.config import data as config_data
 from domain.detection.hashing import compare_hashes
 from domain.recursive.scraping import recursive_get_urls_in_domain
 from domain.utils import load_data, write_data
-from domain.classification.classify import detect_signatures
+from domain.classification.classify import classify
 
 base = config_recursive["base"]
 domain = config_recursive["domain"]
@@ -17,5 +17,5 @@ if __name__ == '__main__':
     urls = recursive_get_urls_in_domain(base, domain)
     data = load_data(urls, load_previous_data, data_path)
     data = compare_hashes(data)
-    detect_signatures(data, signatures_path)
+    classify(data, signatures_path)
     write_data(data, data_path)

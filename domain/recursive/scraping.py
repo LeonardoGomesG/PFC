@@ -1,6 +1,7 @@
 import re
 
 from bs4 import BeautifulSoup
+import lxml.html
 import requests
 
 # Apenas para controle de profundidade em testes
@@ -34,9 +35,11 @@ def scrape(ref, domain=None, data=None):
 
     # converting to a parser
     s = BeautifulSoup(r.text, "html.parser")
+    # s = lxml.html.fromstring(r.text)
 
     depth += 1
     for i in s.find_all("a"):
+    # for i in s.xpath('//a[@href]'):
 
         href = i.get('href')
 
