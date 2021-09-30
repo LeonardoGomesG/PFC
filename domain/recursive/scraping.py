@@ -1,17 +1,14 @@
 from queue import Queue
 import re
-# import threading
 from typing import Dict
 from domain.utils import _sentinel
 
-# from bs4 import BeautifulSoup
 import lxml.html
 import requests
 
-# Apenas para controle de profundidade em testes
 from setup.config import recursive as config_recursive
-# from typing import string
 
+# Controling depth for testing
 max_depth = config_recursive["max_depth"]
 depth = 0
 
@@ -22,9 +19,6 @@ def recursive_get_urls_in_domain(base: str, url_queue: Queue, domain: str=None):
         print("Recursive: Limiting max_depth:", max_depth)
 
     urls = scrape_threads(base, url_queue, domain)
-    # recursive_event.set()
-    # print("recursive_event set")
-    # print(recursive_event.is_set())
     url_queue.put(_sentinel)
     print("Recursive: Finished recursion")
     return urls
