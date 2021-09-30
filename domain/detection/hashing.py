@@ -3,7 +3,7 @@ import hashlib
 from domain.utils import _sentinel
 
 def compare_hashes_thread(urls_queue: Queue, hits_queue: Queue, write_queue: Queue, data: dict):
-    print("Detection: Calculating Hashes")
+    print("DETECTION: Calculating Hashes")
     diff = 0
     while True:
         url = urls_queue.get()
@@ -14,9 +14,10 @@ def compare_hashes_thread(urls_queue: Queue, hits_queue: Queue, write_queue: Que
             break
             
         url_path = list(url.keys())[0]
-        response = url[url_path].text.encode('utf-8')
+        raw_response = url[url_path]
+        response = raw_response.text.encode('utf-8')
         # create a hash
-        print("Detection: hashing", url_path)
+        print(f"DETECTION: hashing {url_path}")
 
         new_hash = hashlib.md5(response).hexdigest()
 
@@ -31,15 +32,13 @@ def compare_hashes_thread(urls_queue: Queue, hits_queue: Queue, write_queue: Que
 
         # if something changed in the hashes or new page
         else:
-            # notify
-            #call classify()
-            hits_queue.put({url_path: new_hash})
+            hits_queue.put({url_path: raw_response})
             write_queue.put({url_path: new_hash})
-            print("Detection: Hash difference for: ", url_path, ": ", previous_hash)
-            print("Detection: new_hash: ", new_hash)
+            print(f"DETECTION: Hash difference for {url_path}: {previous_hash}")
+            print(f"DETECTION: new_hash: {new_hash}")
             diff += 1
 
-    print("Detection: ", diff, "differences found")
-    print("Detection: Finished hashing")
+    print(f"DETECTION: {diff} differences found")
+    print("DETECTION: Finished hashing")
 
 

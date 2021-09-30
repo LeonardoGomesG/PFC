@@ -14,13 +14,13 @@ depth = 0
 
 
 def recursive_get_urls_in_domain(base: str, url_queue: Queue, domain: str=None):
-    print("Recursive: Finding recursive urls")
+    print("RECURSIVE: Finding recursive urls")
     if max_depth:
-        print("Recursive: Limiting max_depth:", max_depth)
+        print(f"RECURSIVE: Limiting max_depth: {max_depth}")
 
     urls = scrape_threads(base, url_queue, domain)
     url_queue.put(_sentinel)
-    print("Recursive: Finished recursion")
+    print("RECURSIVE: Finished recursion")
     return urls
 
 
@@ -52,7 +52,7 @@ def scrape_threads(ref: str, url_queue: Queue, domain: str=None, urls_data: Dict
         if not ref.endswith(".pdf") and not ref.endswith(".jpg") and not ref.endswith(".rar") and not re.search("@", ref):
             urls_data[ref] = r
             url_queue.put({ref: r})
-            print("\nRecursive:", ref)
+            print(f"\nRECURSIVE: {ref}")
 
             for i in s.xpath('//a[@href]'):
 
@@ -63,7 +63,7 @@ def scrape_threads(ref: str, url_queue: Queue, domain: str=None, urls_data: Dict
                     hostname = re.findall('://([\w\-.]+)', ref)[0]
                     base = protocol + "://" + hostname
                 except:
-                    print("Recursive: Out of the domain")
+                    print("RECURSIVE: Out of the domain")
                     continue
 
                 if href:

@@ -13,10 +13,10 @@ def load_data():
         with open(data_path) as file:
             data = json.load(file)
         file.close()
-        print("\nPrevious data loaded")
+        print("\nAUXILIAR: Previous data loaded")
         return data
     else:
-        print("\nPrevious data not loaded")
+        print("\nAUXILIAR: Previous data not loaded")
 
 
 def write_data(data):
@@ -44,13 +44,13 @@ def write_data_thread(data: Dict, write_queue: Queue):
         data.update(new_data)
 
         if len(data.keys()) > 10:
-            print("\nAuxiliar: Writing Data to data.json\n")
+            print("\nAUXILIAR: Writing Data to data.json\n")
             write_append_data(data)
             data.clear()
         
-    print("\nAuxiliar: Writing remaining Data to data.json")
+    print("\nAUXILIAR: Writing remaining Data to data.json")
     write_append_data(data)
-    print("Auxiliar: All data saved successfully\n")
+    print("AUXILIAR: All data saved successfully\n")
     data.clear()
 
 
