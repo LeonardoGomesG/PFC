@@ -1,6 +1,5 @@
 #IDE
 .idea
-.venvpfc
 .vscode
 
 # Byte-compiled / optimized / DLL files
@@ -112,6 +111,7 @@ celerybeat.pid
 # Environments
 .env
 .venv
+.venvpfc
 env/
 venv/
 ENV/

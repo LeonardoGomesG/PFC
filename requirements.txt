@@ -7,6 +7,8 @@ filelock==3.0.12
 idna==3.2
 importlib-metadata==4.8.1
 importlib-resources==5.2.2
+lxml==4.6.3
+pkg-resources==0.0.0
 platformdirs==2.3.0
 requests==2.26.0
 six==1.16.0
@@ -15,4 +17,3 @@ typing-extensions==3.10.0.2
 urllib3==1.26.6
 virtualenv==20.7.2
 zipp==3.5.0
-lxml

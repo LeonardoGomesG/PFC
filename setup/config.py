@@ -2,7 +2,7 @@
 recursive = {
     "base": "https://webscraper.io/test-sites/e-commerce/static",
     "domain": "webscraper.io/test-sites/e-commerce/static",
-    "max_depth": None
+    "max_depth": 20
 }
 
 data = {
