@@ -1,11 +1,13 @@
+
+from setup.config import notification as config_notification
 import smtplib, ssl
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 def send_email(to, subject, text):
 
-    from_email = 'asdmalizia@gmail.com'
-    psw = 'm8007a6524'
+    from_email = config_notification["from_email"]
+    psw = config_notification["password"]
 
     smtp_server = 'smtp.gmail.com'
     port = 587
@@ -30,8 +32,3 @@ def send_email(to, subject, text):
     
     finally:
         session.quit()
-
-
-send_email('alessandramalizia@hotmail.com', 'PFC Notification', 'testing')
-
-
