@@ -50,9 +50,9 @@ def scrape_threads(ref: str, url_queue: Queue, domain: str=None, urls_data: Dict
         s = lxml.html.fromstring(r.text)
         depth += 1
         if not ref.endswith(".pdf") and not ref.endswith(".jpg") and not ref.endswith(".rar") and not re.search("@", ref):
+            print(f"\nRECURSIVE: {ref}")
             urls_data[ref] = r
             url_queue.put({ref: r})
-            print(f"\nRECURSIVE: {ref}")
 
             for i in s.xpath('//a[@href]'):
 
