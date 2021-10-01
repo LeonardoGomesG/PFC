@@ -1,4 +1,4 @@
-from setup.config import signatures as config_signatures
+from setup.config import tesseract_path
 from setup.config import notification as config_notification
 import pytesseract
 import requests
@@ -12,7 +12,7 @@ from queue import Queue
 from domain.constants import sentinel, signatures_path
 
 
-pytesseract.pytesseract.tesseract_cmd = config_signatures['tesseract']
+pytesseract.pytesseract.tesseract_cmd = tesseract_path
 
 
 def get_signatures_regex(path):
@@ -77,9 +77,10 @@ def classify_thread(hits_queue: Queue, write_queue: Queue):
 
             if detect_signature(response, signatures_regex) or detect_image(response, base, signatures_regex):
                 logger.info(f"CLASSIFICATION: Defacement Detected for {url}!\n")
-
                 defaced_urls.append(url)
-                send_email(config_notification["to_email"], 'Defacement Notification', f'Defacement Detected for {url}!')
+                
+                body = f'Defacement Detected for: {url}' # change email body
+                send_email(config_notification["to_email"], 'Defacement Notification', body)
             else:
                 write_queue.put({url: hash})
                 logger.info(f"CLASSIFICATION: No defacement detected for {url}\n")  

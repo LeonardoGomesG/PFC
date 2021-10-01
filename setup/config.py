@@ -11,13 +11,11 @@ recursive = {
 
 load_previous_data = True,
 
-signatures = {
-    'path': './domain/classification/signatures.txt',
-    'tesseract': r'C:\Program Files\Tesseract-OCR\tesseract.exe'
-}
+tesseract_path = r'C:\Program Files\Tesseract-OCR\tesseract.exe',
 
 notification = {
     'from_email': 'asdmalizia@gmail.com',
     'password': 'kuhidkqxnauykqxq',
+    # 'to_email': 'narcelio@outlook.com'
     'to_email': 'alessandramalizia@hotmail.com'
 }
