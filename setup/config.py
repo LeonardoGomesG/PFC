@@ -9,10 +9,7 @@ recursive = {
     "max_depth": 20
 }
 
-data = {
-    "load_previous_data": True,
-    'path': './domain/data.json'
-}
+load_previous_data = True,
 
 signatures = {
     'path': './domain/classification/signatures.txt',

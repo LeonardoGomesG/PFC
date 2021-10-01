@@ -9,9 +9,15 @@ import re
 import lxml.html
 from io import BytesIO
 from domain.notification.notifiy import send_email 
+import logging
+from queue import Queue
+import re
+import lxml.html
+from domain.constants import sentinel, signatures_path
 
 
 pytesseract.pytesseract.tesseract_cmd = config_signatures['tesseract']
+
 
 def get_signatures_regex(path):
     ''' Return regex of all signatures in specified file, without special characters'''
@@ -51,18 +57,23 @@ def detect_image(content, base, regex):
         return detect_signature(content, regex)
     return False
 
-def classify_thread(hits_queue: Queue):
-    print("CLASSIFICATION: Classifying hash differences")
-    print("CLASSIFICATION: Getting regex signatures")
-    signatures_regex = get_signatures_regex(config_signatures["path"])
-    diff = 0
+def classify_thread(hits_queue: Queue, write_queue: Queue):
+    logger = logging.getLogger('LOG')
+    logger.info("CLASSIFICATION: Classifying hash differences")
+    logger.info("CLASSIFICATION: Getting regex signatures\n")
+    signatures_regex = get_signatures_regex(signatures_path)
     defaced_urls = []
     while True:
         hit = hits_queue.get()
-        if hit is _sentinel:
-            hits_queue.put(_sentinel)
+        if hit is sentinel:
+            hits_queue.put(sentinel)
+            write_queue.put(sentinel)
             break
 
+        url = hit[0]
+        raw_response = hit[1]
+        hash = hit[2]
+        response = raw_response.text
         try:
             url = list(hit.keys())[0]
             raw_response = hit[url]
@@ -73,17 +84,19 @@ def classify_thread(hits_queue: Queue):
             base = protocol + "://" + hostname
 
             if detect_signature(response, signatures_regex) or detect_image(response, base, signatures_regex):
-                print(f"CLASSIFICATION: Defacement Detected for {url}!")
-                diff += 1 
+                logger.info(f"CLASSIFICATION: Defacement Detected for {url}!\n")
+
                 defaced_urls.append(url)
                 send_email(config_notification["to_email"], 'PFC Notification', f'Defacement Detected for {url}!')
             else:
-                print("CLASSIFICATION: No defacement detected for", url)  
+                write_queue.put({url: hash})
+                logger.info(f"CLASSIFICATION: No defacement detected for {url}\n")  
 
         except Exception as e:
-            print(f"CLASSIFICATION: ERROR: {e}")
+            logger.info(f"CLASSIFICATION: ERROR: {e}")
 
-    print('CLASSIFICATION: Classification finished')   
-    print(f"CLASSIFICATION: Defaced Urls: \n{defaced_urls}") 
+
+    logger.info('CLASSIFICATION: Classification finished')   
+    logger.info(f"CLASSIFICATION: Defaced Urls: \n{defaced_urls}") 
     return 
 
