@@ -1,9 +1,10 @@
 {
-  "https://webscraper.io/test-sites/e-commerce/static": "e3b4f30cf0efa7a01adaf0ca4029b9bf",
-  "https://webscraper.io/test-sites/e-commerce/static/computers": "331fb1a93f5858ceabc865dc3c0de111",
+  "http://www.sintesir.org.br/editor/images/hack.html": "5360980bad11bf9723da89687501effc",
+  "https://webscraper.io/test-sites/e-commerce/static": "02bf98c5eb8088c7489a1755cdecef20",
+  "https://webscraper.io/test-sites/e-commerce/static/computers": "6d102abbb455a30b44bd5ec0441df9fb",
   "https://webscraper.io/test-sites/e-commerce/static/computers/laptops": "527e814f5ce79f4978837c8505d7ea17",
   "https://webscraper.io/test-sites/e-commerce/static/computers/tablets": "74d03b36ffa136c8b6d1968e76363c15",
-  "https://webscraper.io/test-sites/e-commerce/static/phones": "dc4d072d60eb0814b32361b7319be378",
+  "https://webscraper.io/test-sites/e-commerce/static/phones": "49d98d982629ad8a246c25c0f0003b5c",
   "https://webscraper.io/test-sites/e-commerce/static/phones/touch": "fc4ddad4d57c899356ddd36f458e9998",
   "https://webscraper.io/test-sites/e-commerce/static/phones/touch?page=1": "87dc96e3a851d5b6d0505b7b497e8d4e",
   "https://webscraper.io/test-sites/e-commerce/static/phones/touch?page=2": "6b3c23a8b7d9f721323cdc0a2471a624",

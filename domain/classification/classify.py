@@ -1,8 +1,8 @@
+import logging
 from queue import Queue
 import re
 import lxml.html
-from domain.constants import sentinel
-from setup.config import signatures as config_signatures
+from domain.constants import sentinel, signatures_path
 
 def get_signatures_regex(path):
     ''' Return regex of all signatures in specified file, without special characters'''
@@ -30,9 +30,10 @@ def detect_image(content):
 
 
 def classify_thread(hits_queue: Queue, write_queue: Queue):
-    print("CLASSIFICATION: Classifying hash differences")
-    print("CLASSIFICATION: Getting regex signatures")
-    signatures_regex = get_signatures_regex(config_signatures["path"])
+    logger = logging.getLogger('LOG')
+    logger.info("CLASSIFICATION: Classifying hash differences")
+    logger.info("CLASSIFICATION: Getting regex signatures\n")
+    signatures_regex = get_signatures_regex(signatures_path)
     defaced_urls = []
     while True:
         hit = hits_queue.get()
@@ -48,16 +49,17 @@ def classify_thread(hits_queue: Queue, write_queue: Queue):
         try:
             if detect_signature(response, signatures_regex) or detect_image(response):
                 # send alert
-                print(f"CLASSIFICATION: Defacement Detected for {url}!")
+                logger.info(f"CLASSIFICATION: Defacement Detected for {url}!\n")
                 defaced_urls.append(url)
             else:
                 write_queue.put({url: hash})
-                print("CLASSIFICATION: No defacement detected for", url)  
+                logger.info(f"CLASSIFICATION: No defacement detected for {url}\n")  
 
         except Exception as e:
-            print(f"CLASSIFICATION: ERROR: {e}")
+            logger.info(f"CLASSIFICATION: ERROR: {e}")
 
-    print('CLASSIFICATION: Classification finished')   
-    print(f"CLASSIFICATION: Defaced Urls: \n{defaced_urls}") 
+
+    logger.info('CLASSIFICATION: Classification finished')   
+    logger.info(f"CLASSIFICATION: Defaced Urls: \n{defaced_urls}") 
     return 
 

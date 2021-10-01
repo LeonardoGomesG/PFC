@@ -1,10 +1,12 @@
+import logging
 from queue import Queue
 import hashlib
 from domain.constants import sentinel
 
 
 def compare_hashes_thread(urls_queue: Queue, hits_queue: Queue, data: dict):
-    print("DETECTION: Calculating Hashes")
+    logger = logging.getLogger('LOG')
+    logger.info("DETECTION: Calculating Hashes\n")
     diff = 0
     while True:
         url = urls_queue.get()
@@ -17,7 +19,7 @@ def compare_hashes_thread(urls_queue: Queue, hits_queue: Queue, data: dict):
         raw_response = url[1]
         response = raw_response.text.encode('utf-8')
         # create a hash
-        print(f"DETECTION: hashing {url_path}")
+        logger.info(f"DETECTION: hashing {url_path}")
 
         new_hash = hashlib.md5(response).hexdigest()
 
@@ -33,11 +35,12 @@ def compare_hashes_thread(urls_queue: Queue, hits_queue: Queue, data: dict):
         # if something changed in the hashes or new page
         else:
             hits_queue.put((url_path, raw_response, new_hash))
-            print(f"DETECTION: Hash difference for {url_path}: {previous_hash}")
-            print(f"DETECTION: new_hash: {new_hash}")
+            logger.info(f"DETECTION: Hash difference for {url_path}: {previous_hash}")
+            logger.info(f"DETECTION: new_hash: {new_hash}")
             diff += 1
+        
 
-    print(f"DETECTION: {diff} differences found")
-    print("DETECTION: Finished hashing")
+    logger.info(f"DETECTION: {diff} differences found")
+    logger.info("DETECTION: Finished hashing\n")
 
 

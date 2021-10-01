@@ -1,32 +1,32 @@
 import logging
 
-#RECURSIVE
-# Create a custom logger
-recursive_logger = logging.getLogger("RECURSIVE")
-detection_logger = logging.getLogger("DETECTION")
-classification_logger = logging.getLogger("CLASSIFICATION")
-auxilar_logger = logging.getLogger("AUXILIAR")
 
+def configure_logs():
+    logger = logging.getLogger("LOG")
 
-# Create handlers
-l_handler = logging.FileHandler(filename='logs.log', mode='a')
-s_handler = logging.StreamHandler()
-format = logging.Formatter(fmt='%(asctime)s - %(name)s - %(levelname)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S')
-# logging.basicConfig(filename='example.log', filemode='w', format='%(asctime)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S')
-l_handler.setFormatter(format)
-s_handler.setFormatter(format)
+    # Create handlers
+    file_handler = logging.FileHandler(filename='domain/logs/logs.log', mode='a')
+    stream_handler = logging.StreamHandler()
+    
+    file_formatter = logging.Formatter(fmt='%(asctime)s -- %(message)s', datefmt='%d-%b-%y %H:%M:%S')
+    stream_formatter = logging.Formatter(fmt='%(message)s')
 
-# Add handlers to the logger
-recursive_logger.addHandler(l_handler)
-recursive_logger.addHandler(s_handler)
+    file_handler.setFormatter(file_formatter)
+    stream_handler.setFormatter(stream_formatter)
 
-detection_logger.addHandler(l_handler)
-detection_logger.addHandler(s_handler)
+    # Add handlers to the logger
+    logger.addHandler(file_handler)
+    logger.addHandler(stream_handler)
+    logger.setLevel(logging.INFO)
 
-classification_logger.addHandler(l_handler)
-classification_logger.addHandler(s_handler)
+    log_start()
 
-auxilar_logger.addHandler(l_handler)
-auxilar_logger.addHandler(s_handler)
+def log_start():
+    logger = logging.getLogger("LOG")
+    logger.info("---------------------------")
+    logger.info("LOG START")
 
-# recursive_logger.addHandler(s_handler)
+def log_end():
+    logger = logging.getLogger("LOG")
+    logger.info("LOG END")
+    logger.info("---------------------------")
