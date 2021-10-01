@@ -22,10 +22,3 @@ if __name__ == '__main__':
         executor.submit(compare_hashes_thread, urls_queue, hits_queue, write_queue, data)
         executor.submit(write_data_thread, data, write_queue)
         executor.submit(classify_thread, hits_queue)
-
-
-    # urls = recursive_get_urls_in_domain(base, domain)
-    # data = load_data()
-    # data = compare_hashes_thread(urls, data)
-    # classify(data, signatures_path)
-    # write_data(data)

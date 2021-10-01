@@ -5,6 +5,9 @@ from lxml import etree
 import requests
 from domain.utils import _sentinel
 from setup.config import signatures as config_signatures
+import pytesseract
+from PIL import Image
+
 
 def get_signatures_regex(path):
     ''' Return regex of all signatures in specified file, without special characters'''
@@ -98,3 +101,6 @@ def classify_thread(hits_queue: Queue):
 
         # return
 
+img_path = 'defacement.gif'
+img = Image.open(img_path)
+print(pytesseract.image_to_string(img)
