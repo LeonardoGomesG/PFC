@@ -20,13 +20,14 @@ def send_email(to, subject, text):
         session.login(from_email, psw)
 
         message = MIMEMultipart()
-        message['From'] = 'Defacement Report'
+        message['From'] = 'PFC Report'
         message['Subject'] = subject
         message['To'] = to
         
         message.attach(MIMEText(text, 'plain'))
 
         session.sendmail(from_email, to, message.as_string())
+
     except Exception as e:
         print(f'Error: {e}')
     

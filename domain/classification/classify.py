@@ -1,18 +1,14 @@
-from domain.utils import _sentinel
 from setup.config import signatures as config_signatures
 from setup.config import notification as config_notification
 import pytesseract
 import requests
 from PIL import Image
-from queue import Queue
 import re
 import lxml.html
 from io import BytesIO
 from domain.notification.notifiy import send_email 
 import logging
 from queue import Queue
-import re
-import lxml.html
 from domain.constants import sentinel, signatures_path
 
 
@@ -75,10 +71,6 @@ def classify_thread(hits_queue: Queue, write_queue: Queue):
         hash = hit[2]
         response = raw_response.text
         try:
-            url = list(hit.keys())[0]
-            raw_response = hit[url]
-            response = raw_response.text
-
             protocol = re.findall('(\w+)://', url)[0]
             hostname = re.findall('://([\w\-.]+)', url)[0]
             base = protocol + "://" + hostname
@@ -87,7 +79,7 @@ def classify_thread(hits_queue: Queue, write_queue: Queue):
                 logger.info(f"CLASSIFICATION: Defacement Detected for {url}!\n")
 
                 defaced_urls.append(url)
-                send_email(config_notification["to_email"], 'PFC Notification', f'Defacement Detected for {url}!')
+                send_email(config_notification["to_email"], 'Defacement Notification', f'Defacement Detected for {url}!')
             else:
                 write_queue.put({url: hash})
                 logger.info(f"CLASSIFICATION: No defacement detected for {url}\n")  
