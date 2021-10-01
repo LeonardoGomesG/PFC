@@ -1,12 +1,9 @@
 import json
 from queue import Queue
 from typing import Dict
-from setup.config import data as config_data
+from setup.config import load_previous_data
+from domain.constants import sentinel, data_path
 
-_sentinel = object()
-
-load_previous_data = config_data["load_previous_data"]
-data_path = config_data['path']
 
 def load_data():
     if load_previous_data:
@@ -37,8 +34,8 @@ def write_data_thread(data: Dict, write_queue: Queue):
     data = {}
     while True:
         new_data = write_queue.get()
-        if new_data is _sentinel:
-            write_queue.put(_sentinel)
+        if new_data is sentinel:
+            write_queue.put(sentinel)
             break
 
         data.update(new_data)

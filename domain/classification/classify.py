@@ -1,8 +1,7 @@
 from queue import Queue
 import re
 import lxml.html
-from lxml import etree
-from domain.utils import _sentinel
+from domain.constants import sentinel
 from setup.config import signatures as config_signatures
 
 def get_signatures_regex(path):
@@ -30,29 +29,29 @@ def detect_image(content):
     return len(filter) == 1
 
 
-def classify_thread(hits_queue: Queue):
+def classify_thread(hits_queue: Queue, write_queue: Queue):
     print("CLASSIFICATION: Classifying hash differences")
     print("CLASSIFICATION: Getting regex signatures")
     signatures_regex = get_signatures_regex(config_signatures["path"])
-    diff = 0
     defaced_urls = []
     while True:
         hit = hits_queue.get()
-        if hit is _sentinel:
-            hits_queue.put(_sentinel)
+        if hit is sentinel:
+            hits_queue.put(sentinel)
+            write_queue.put(sentinel)
             break
 
+        url = hit[0]
+        raw_response = hit[1]
+        hash = hit[2]
+        response = raw_response.text
         try:
-            url = list(hit.keys())[0]
-            raw_response = hit[url]
-            response = raw_response.text
-
             if detect_signature(response, signatures_regex) or detect_image(response):
                 # send alert
                 print(f"CLASSIFICATION: Defacement Detected for {url}!")
-                diff += 1 
                 defaced_urls.append(url)
             else:
+                write_queue.put({url: hash})
                 print("CLASSIFICATION: No defacement detected for", url)  
 
         except Exception as e:
