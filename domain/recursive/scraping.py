@@ -53,37 +53,40 @@ def scrape_threads(ref: str, url_queue: Queue, domain: str=None, urls_data: Dict
         urls_data = {}
 
     if ref not in urls_data.keys() and re.search(domain, ref) and not reached_max_depth(depth):
-
         try:
             request = requests.get(ref, timeout=10)
         except Timeout:
+            logger.info(f"RECURSIVE: timeout for {ref}")
             request = None
+            return
 
         # converting to a parser
         s = lxml.html.fromstring(request.text)
         depth += 1
-        if valid_url(ref):
-            logger.info(f"RECURSIVE: {ref}")
-            urls_data[ref] = request
-            url_queue.put((ref, request))
 
-            for i in s.xpath('//a[@href]'):
-                href = i.get('href')
+        logger.info(f"RECURSIVE: {ref}")
+        urls_data[ref] = request
+        url_queue.put((ref, request))
+        
+        # search for a.href tag, expansion possibility for other tags
+        for i in s.xpath('//a[@href]'):
+            href = i.get('href')
 
-                try:
-                    protocol = re.findall('(\w+)://', ref)[0]
-                    hostname = re.findall('://([\w\-.]+)', ref)[0]
-                    base = protocol + "://" + hostname
-                except:
-                    logger.info("RECURSIVE: Out of the domain")
-                    continue
+            try:
+                protocol = re.findall('(\w+)://', ref)[0]
+                hostname = re.findall('://([\w\-.]+)', ref)[0]
+                base = protocol + "://" + hostname
+            except:
+                logger.info("RECURSIVE: Out of the domain")
+                continue
 
-                if href:
-                    if href.startswith("/"):
-                        site = base + href
-                    else:
-                        site = href
+            if href:
+                if href.startswith("/"):
+                    site = base + href
+                else:
+                    site = href
 
+            if valid_url(site):
                 scrape_threads(site, url_queue, domain, urls_data)
 
     return

@@ -41,7 +41,7 @@ def write_data_thread(data: Dict, write_queue: Queue):
 
         data.update(new_data)
 
-        if len(data.keys()) > 10:
+        if len(data.keys()) > 100:
             logger.info("AUXILIAR: Writing Data to data.json\n")
             write_append_data(data)
             data.clear()
