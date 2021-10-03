@@ -9,6 +9,8 @@ recursive = {
     "max_depth": 100
 }
 
+rerun_recursion = True
+
 load_previous_data = True,
 
 tesseract_path = r'C:\Program Files\Tesseract-OCR\tesseract.exe'

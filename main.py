@@ -1,8 +1,8 @@
 from domain.logs import configure_logs, log_end
-from setup.config import recursive as config_recursive
+from setup.config import recursive as config_recursive, rerun_recursion
 from domain.detection.hashing import compare_hashes_thread
 from domain.recursive.scraping import recursive_get_urls_in_domain
-from domain.utils import load_data, write_data_thread
+from domain.utils import fill_urls_queue_thread, load_data, write_data_thread
 from domain.classification.classify import classify_thread
 import concurrent.futures
 from queue import Queue
@@ -16,7 +16,11 @@ if __name__ == '__main__':
     write_queue = Queue()
     hits_queue = Queue()
     with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
-        executor.submit(recursive_get_urls_in_domain, base, urls_queue, base_domain)
+        if rerun_recursion:
+            executor.submit(recursive_get_urls_in_domain, base, urls_queue, base_domain)
+        else:
+            executor.submit(fill_urls_queue_thread, data, urls_queue)
+
         executor.submit(compare_hashes_thread, urls_queue, hits_queue, data)
         executor.submit(classify_thread, hits_queue, write_queue)
         executor.submit(write_data_thread, data, write_queue)
