@@ -23,7 +23,7 @@ if __name__ == '__main__':
 
         executor.submit(compare_hashes_thread, urls_queue, hits_queue, data)
         executor.submit(classify_thread, hits_queue, write_queue)
-        executor.submit(write_data_thread, data, write_queue)
+        executor.submit(write_data_thread, write_queue)
     
     log_end()
 

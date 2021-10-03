@@ -34,7 +34,7 @@ def write_append_data(append_data):
         json.dump(data, file, indent=2, sort_keys=True)
     file.close()
 
-def write_data_thread(data: Dict, write_queue: Queue):
+def write_data_thread(write_queue: Queue):
     logger = logging.getLogger('LOG')
     data = {}
     while True:
