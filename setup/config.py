@@ -12,6 +12,8 @@ recursive = {
     "max_depth": None
 }
 
+max_threads = 10
+
 rerun_recursion = True
 
 load_previous_data = True,
