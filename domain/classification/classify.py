@@ -79,8 +79,6 @@ def classify_thread(hits_queue: Queue, write_queue: Queue):
                 logger.info(f"CLASSIFICATION: Defacement Detected for {url}!\n")
                 defaced_urls.append(url)
                 
-                body = f'Defacement Detected for: {url}' # change email body
-                send_email(config_notification["to_email"], 'Defacement Notification', body)
             else:
                 write_queue.put({url: hash})
                 logger.info(f"CLASSIFICATION: No defacement detected for {url}\n")  
@@ -91,5 +89,7 @@ def classify_thread(hits_queue: Queue, write_queue: Queue):
 
     logger.info('CLASSIFICATION: Classification finished')   
     logger.info(f"CLASSIFICATION: Defaced Urls: \n{defaced_urls}") 
+    body = f'Defacement Detected for: {defaced_urls}' # change email body
+    send_email(config_notification["to_email"], 'Defacement Notification', body)
     return 
 
