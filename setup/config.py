@@ -4,11 +4,11 @@
 # For each base, there must be a domain
 recursive = {
     # "base": "https://webscraper.io/test-sites/e-commerce/static",
-    "base": ["http://www.sicca.ima.mg.gov.br/index.html", 'https://cnmqualifica.cnm.org.br/conexoes-municipalistas/'],
+    "base": ["http://www.sicca.ima.mg.gov.br/index.html", 'https://cnmqualifica.cnm.org.br/conexoes-municipalistas/', "http://www.comp.ime.eb.br/graduacao_teste/"],
     # "base": "https://www.bbc.com/news/technology-43812539",
     # 'base': 'https://cnmqualifica.cnm.org.br/conexoes-municipalistas/',
     # "domain": "webscraper.io/test-sites/e-commerce",,
-    'domain': ["gov.br", "cnmqualifica.cnm.org.br"],
+    'domain': ["gov.br", "cnmqualifica.cnm.org.br", "ime.eb.br/graduacao_teste"],
     "max_depth": None
 }
 
@@ -27,7 +27,10 @@ signatures = {
 
 notification = {
     'from_email': 'asdmalizia@gmail.com',
-    'password': 'kuhidkqxnauykqxq',
+    'password': 'kuhidkqxnauykqxq', #alessandra
+    # 'password': 'zrtohmwiiycrwzbp',  #leonardo
+
     # 'to_email': 'narcelio@outlook.com'
-    'to_email': 'alessandramalizia@hotmail.com'
+    # 'to_email': 'alessandramalizia@hotmail.com'
+    'to_email': 'leonardo.gomes.g95@gmail.com'
 }

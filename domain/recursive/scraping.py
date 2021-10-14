@@ -42,6 +42,7 @@ def valid_url(ref):
     return not ref.endswith(".pdf") \
         and not ref.endswith(".jpg") \
         and not ref.endswith(".rar") \
+        and not ref.endswith(".css") \
         and not re.search("@", ref)
 
 def is_inside_domain(ref, domain):
@@ -68,32 +69,50 @@ def scrape_threads(ref: str, url_queue: Queue, domain: str=None, urls_data: Dict
 
         # converting to a parser
         s = lxml.html.fromstring(request.text)
+        # print("s: ", s)
+        links = list(s.iterlinks())
+        for _, attr, link, _ in links:
+            print(f"d <{attr}>: {link}\n")
+        # print("d: ", d)
         depth += 1
 
         logger.info(f"RECURSIVE: {ref}")
         urls_data[ref] = request
         url_queue.put((ref, request))
-        
+        # print("a")
+        # s = s.make_links_absolute(ref)
+        # print("b")
         # search for a.href tag, expansion possibility for other tags
-        for i in s.xpath('//a[@href]'):
-            href = i.get('href')
+        # links = s.xpath('//a')
 
-            try:
-                protocol = re.findall('(\w+)://', ref)[0]
-                hostname = re.findall('://([\w\-.]+)', ref)[0]
-                base = protocol + "://" + hostname
-            except:
-                logger.info("RECURSIVE: Out of the domain")
-                continue
+        for _, attr, link, _ in links:
+            if attr == 'href':
+        # for i in s.xpath('//a[@href]'):
+        # for i in s.xpath('//a')[0].get("href"):
+            # href = i.get('href')
+                print("a")
+                # href = link.attrib['href']
+                href = link
+                print("TESTE: href: ", href)
+                try:
+                    protocol = re.findall('(\w+)://', ref)[0]
+                    hostname = re.findall('://([\w\-.]+)', ref)[0]
+                    base = protocol + "://" + hostname
+                except:
+                    logger.info("RECURSIVE: Out of the domain")
+                    continue
 
-            if href:
-                if href.startswith("/"):
-                    site = base + href
-                else:
-                    site = href
+                print("b")
+                if href:
+                    if href.startswith("/"):
+                        site = base + href
+                    else:
+                        site = href
 
-            if valid_url(site):
-                scrape_threads(site, url_queue, domain, urls_data)
+                print("c")
+                if valid_url(site):
+                    print("valid_site", site)
+                    scrape_threads(site, url_queue, domain, urls_data)
 
     return
 
