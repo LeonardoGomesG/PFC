@@ -19,16 +19,16 @@ def recursive_get_urls_in_domain(base: str, url_queue: Queue, domain: str=None):
     logger = logging.getLogger('LOG')
     if max_depth:
         logger.info(f"RECURSIVE: Limiting max_depth: {max_depth}")
-    logger.info("RECURSIVE: Finding recursive urls\n")
 
-    if not re.search(domain, base):
+    logger.info(f"RECURSIVE: Finding recursive urls from {base}\n")
+    if not is_inside_domain(base, domain):
         url_queue.put(sentinel)
         logger.error(f"CONFIG_ERROR: base url out of the domain!")
 
 
     urls = scrape_threads(base, url_queue, domain)
     url_queue.put(sentinel)
-    logger.info("RECURSIVE: Finished recursion\n")
+    logger.info(f"RECURSIVE: Finished recursion from {base}\n")
     return urls
 
 
@@ -43,6 +43,12 @@ def valid_url(ref):
         and not ref.endswith(".jpg") \
         and not ref.endswith(".rar") \
         and not re.search("@", ref)
+
+def is_inside_domain(ref, domain):
+    if domain:
+        return re.search(domain, ref)
+    else:
+        return True
         
 
 # recursive scraping
@@ -52,7 +58,7 @@ def scrape_threads(ref: str, url_queue: Queue, domain: str=None, urls_data: Dict
     if urls_data is None:
         urls_data = {}
 
-    if ref not in urls_data.keys() and re.search(domain, ref) and not reached_max_depth(depth):
+    if ref not in urls_data.keys() and is_inside_domain(ref, domain) and not reached_max_depth(depth):
         try:
             request = requests.get(ref, timeout=10)
         except Timeout:

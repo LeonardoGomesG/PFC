@@ -1,13 +1,20 @@
 # File used for configuration
+
+
+# For each base, there must be a domain
 recursive = {
-    "base": "https://webscraper.io/test-sites/e-commerce/static",
-    # "base": "http://www.sicca.ima.mg.gov.br/index.html",
+    # "base": "https://webscraper.io/test-sites/e-commerce/static",
+    "base": ["http://www.sicca.ima.mg.gov.br/index.html", 'https://cnmqualifica.cnm.org.br/conexoes-municipalistas/'],
     # "base": "https://www.bbc.com/news/technology-43812539",
     # 'base': 'https://cnmqualifica.cnm.org.br/conexoes-municipalistas/',
     # "domain": "webscraper.io/test-sites/e-commerce",,
-    'domain': 'webscraper.io',
-    "max_depth": 100
+    'domain': ["gov.br", "cnmqualifica.cnm.org.br"],
+    "max_depth": None
 }
+
+max_threads = 10
+
+rerun_recursion = True
 
 load_previous_data = True,
 
