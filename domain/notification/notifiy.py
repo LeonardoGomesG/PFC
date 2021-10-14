@@ -27,7 +27,7 @@ def send_email(to, subject, text):
         
         message.attach(MIMEText(text, 'plain'))
         logger.info(f"NOTIFICATION: defacement email sent to: {to}\n")
-        # session.sendmail(from_email, to, message.as_string())
+        session.sendmail(from_email, to, message.as_string())
 
     except Exception as e:
         print(f'Error: {e}')

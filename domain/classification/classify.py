@@ -1,18 +1,18 @@
-# from setup.config import tesseract_path
+from setup.config import tesseract_path
 from setup.config import notification as config_notification
-# import pytesseract
-# import requests
-# from PIL import Image
+import pytesseract
+import requests
+from PIL import Image
 import re
-# import lxml.html
-# from io import BytesIO
+import lxml.html
+from io import BytesIO
 from domain.notification.notifiy import send_email 
 import logging
 from queue import Queue
 from domain.constants import sentinel, signatures_path
 
 
-# pytesseract.pytesseract.tesseract_cmd = tesseract_path
+pytesseract.pytesseract.tesseract_cmd = tesseract_path
 
 
 def get_signatures_regex(path):
@@ -32,26 +32,26 @@ def get_signatures_regex(path):
 def detect_signature(content, signatures_regex):
     return re.search(signatures_regex, content, re.IGNORECASE) is not None
 
-# def detect_image(content, base, regex):
-#     ''' Return true for pages in which body is only an image and image contains signatur'''
+def detect_image(content, base, regex):
+    ''' Return true for pages in which body is only an image and image contains signatur'''
 
-#     html = lxml.html.fromstring(content)
-#     images = html.xpath('//body[count(./img)=1]/img')
-#     if len(images)==1:
+    html = lxml.html.fromstring(content)
+    images = html.xpath('//body[count(./img)=1]/img')
+    if len(images)==1:
 
-#         src = images[0].get('src')
-#         if src.startswith("/"):
-#             url = base + src
-#         else:
-#             url = src
+        src = images[0].get('src')
+        if src.startswith("/"):
+            url = base + src
+        else:
+            url = src
 
-#         response = requests.get(url)
-#         img = Image.open(BytesIO(response.content))
-#         content = pytesseract.image_to_string(img)
-#         content = re.sub("[^a-zA-Z0-9 ]", '', content)
+        response = requests.get(url)
+        img = Image.open(BytesIO(response.content))
+        content = pytesseract.image_to_string(img)
+        content = re.sub("[^a-zA-Z0-9 ]", '', content)
         
-#         return detect_signature(content, regex)
-#     return False
+        return detect_signature(content, regex)
+    return False
 
 def classify_thread(hits_queue: Queue, write_queue: Queue):
     logger = logging.getLogger('LOG')
@@ -75,11 +75,12 @@ def classify_thread(hits_queue: Queue, write_queue: Queue):
             hostname = re.findall('://([\w\-.]+)', url)[0]
             base = protocol + "://" + hostname
 
-            # if detect_signature(response, signatures_regex) or detect_image(response, base, signatures_regex):
-            if detect_signature(response, signatures_regex):
+            if detect_signature(response, signatures_regex) or detect_image(response, base, signatures_regex):
                 logger.info(f"CLASSIFICATION: Defacement Detected for {url}!\n")
                 defaced_urls.append(url)
                 
+                body = f'Defacement Detected for: {url}' # change email body
+                send_email(config_notification["to_email"], 'Defacement Notification', body)
             else:
                 write_queue.put({url: hash})
                 logger.info(f"CLASSIFICATION: No defacement detected for {url}\n")  
@@ -90,7 +91,5 @@ def classify_thread(hits_queue: Queue, write_queue: Queue):
 
     logger.info('CLASSIFICATION: Classification finished')   
     logger.info(f"CLASSIFICATION: Defaced Urls: \n{defaced_urls}") 
-    body = f'Defacement Detected for: {defaced_urls}' # change email body
-    send_email(config_notification["to_email"], 'Defacement Notification', body)
     return 
 
