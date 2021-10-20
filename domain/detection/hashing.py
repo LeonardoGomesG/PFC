@@ -13,6 +13,7 @@ def compare_hashes_thread(urls_queue: Queue, hits_queue: Queue, data: dict, recu
         url = urls_queue.get()
         if url is sentinel: 
             sentinel_count +=1
+            # print("SENTINEL_COUNT: ", sentinel_count)
             if sentinel_count == recursive_threads_count:
                 urls_queue.put(sentinel)
                 hits_queue.put(sentinel)

@@ -43,12 +43,14 @@ def valid_url(ref):
         and not ref.endswith(".jpg") \
         and not ref.endswith(".rar") \
         and not ref.endswith(".css") \
+        and not ref.endswith(".js") \
         and not re.search("@", ref)
 
 def is_inside_domain(ref, domain):
     if domain:
         return re.search(domain, ref)
     else:
+        # print(f"domain{type(domain)}: {domain}")
         return True
         
 
@@ -71,8 +73,8 @@ def scrape_threads(ref: str, url_queue: Queue, domain: str=None, urls_data: Dict
         s = lxml.html.fromstring(request.text)
         # print("s: ", s)
         links = list(s.iterlinks())
-        for _, attr, link, _ in links:
-            print(f"d <{attr}>: {link}\n")
+        # for _, attr, link, _ in links:
+            # print(f"d <{attr}>: {link}\n")
         # print("d: ", d)
         depth += 1
 
@@ -90,10 +92,10 @@ def scrape_threads(ref: str, url_queue: Queue, domain: str=None, urls_data: Dict
         # for i in s.xpath('//a[@href]'):
         # for i in s.xpath('//a')[0].get("href"):
             # href = i.get('href')
-                print("a")
+                # print("a")
                 # href = link.attrib['href']
                 href = link
-                print("TESTE: href: ", href)
+                # print("TESTE: href: ", href)
                 try:
                     protocol = re.findall('(\w+)://', ref)[0]
                     hostname = re.findall('://([\w\-.]+)', ref)[0]
@@ -102,16 +104,16 @@ def scrape_threads(ref: str, url_queue: Queue, domain: str=None, urls_data: Dict
                     logger.info("RECURSIVE: Out of the domain")
                     continue
 
-                print("b")
+                # print("b")
                 if href:
                     if href.startswith("/"):
                         site = base + href
                     else:
                         site = href
 
-                print("c")
+                # print("c")
                 if valid_url(site):
-                    print("valid_site", site)
+                    # print("valid_site", site)
                     scrape_threads(site, url_queue, domain, urls_data)
 
     return

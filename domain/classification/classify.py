@@ -1,4 +1,3 @@
-# from setup.config import tesseract_path
 from setup.config import notification as config_notification
 # import pytesseract
 # import requests
@@ -9,7 +8,7 @@ import re
 from domain.notification.notifiy import send_email 
 import logging
 from queue import Queue
-from domain.constants import sentinel, signatures_path
+from domain.constants import sentinel, signatures_path, tesseract_path
 
 
 # pytesseract.pytesseract.tesseract_cmd = tesseract_path
