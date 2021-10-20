@@ -1,4 +1,3 @@
-from setup.config import tesseract_path
 from setup.config import notification as config_notification
 import pytesseract
 import requests
@@ -9,7 +8,7 @@ from io import BytesIO
 from domain.notification.notifiy import send_email 
 import logging
 from queue import Queue
-from domain.constants import sentinel, signatures_path
+from domain.constants import sentinel, signatures_path, tesseract_path
 
 
 pytesseract.pytesseract.tesseract_cmd = tesseract_path
@@ -33,7 +32,7 @@ def detect_signature(content, signatures_regex):
     return re.search(signatures_regex, content, re.IGNORECASE) is not None
 
 def detect_image(content, base, regex):
-    ''' Return true for pages in which body is only an image and image contains signatur'''
+    ''' Return true for pages in which body is only an image and image contains signatures'''
 
     html = lxml.html.fromstring(content)
     images = html.xpath('//body[count(./img)=1]/img')
